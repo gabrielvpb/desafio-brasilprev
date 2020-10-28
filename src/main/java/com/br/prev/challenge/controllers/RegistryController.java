@@ -38,4 +38,32 @@ public class RegistryController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RegistryResponse> getClient(@PathVariable Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(service.getClient(id));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RegistryResponse.builder().message(e.getMessage()).build());
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<RegistryResponse> updateClient(@RequestBody RegistryRequest request){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(service.updateClient(request));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RegistryResponse.builder().message(e.getMessage()).build());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteClient(@PathVariable Long id){
+        try{
+            service.deleteClient(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Client deleted successfully");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 }
