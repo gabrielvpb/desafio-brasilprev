@@ -12,5 +12,6 @@ public interface RegistryService {
     public List<RegistryResponse> getClientList();
     public RegistryResponse updateClient(RegistryRequest request);
     public void deleteClient(Long id);
+    public RegistryResponse getClientByName(String name);
 
 }

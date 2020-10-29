@@ -6,6 +6,7 @@ import com.br.prev.challenge.entities.ClientEntity;
 import com.br.prev.challenge.repositories.ClientRepository;
 import com.br.prev.challenge.services.RegistryService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
@@ -15,9 +16,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class RegistryServiceImpl implements RegistryService {
 
+    @Autowired
     private ClientRepository repository;
 
     @Override
@@ -55,6 +56,16 @@ public class RegistryServiceImpl implements RegistryService {
             throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Client could not be deleted");
         }
 
+    }
+
+    @Override
+    public RegistryResponse getClientByName(String name) {
+        Optional<ClientEntity>entity = repository.findByName(name);
+        if(entity.isPresent()){
+            return mapToResponse(entity.get());
+        }else {
+            throw new HttpServerErrorException(HttpStatus.NOT_FOUND, "Client not found");
+        }
     }
 
     private ClientEntity mapToEntity(RegistryRequest request){

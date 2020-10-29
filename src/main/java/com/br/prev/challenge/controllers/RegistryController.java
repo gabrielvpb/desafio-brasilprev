@@ -47,6 +47,15 @@ public class RegistryController {
         }
     }
 
+    @GetMapping("/who/{name}")
+    public ResponseEntity<RegistryResponse> getClientByName(@PathVariable String name){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(service.getClientByName(name));
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RegistryResponse.builder().message(e.getMessage()).build());
+        }
+    }
+
     @PutMapping
     public ResponseEntity<RegistryResponse> updateClient(@RequestBody RegistryRequest request){
         try{
